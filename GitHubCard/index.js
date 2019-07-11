@@ -52,12 +52,12 @@ const cardsContainer = document.querySelector('.cards')
 
 cardsContainer.appendChild(createCard())
 
-function createCard(object) {
+function createCard(userobject) {
   //define new elements
   const card = document.createElement('div');
   const userImage = document.createElement('img');
   const cardInfo = document.createElement('div');
-  const name = document.createElement('h3');
+  const fullName = document.createElement('h3');
   const userName = document.createElement('p');
   const userLocation = document.createElement('p');
   const userProfile = document.createElement('p');
@@ -69,7 +69,7 @@ function createCard(object) {
   //define structure of elements
   card.appendChild(userImage)
   card.appendChild(cardInfo)
-  cardInfo.appendChild(name)
+  cardInfo.appendChild(fullName)
   cardInfo.appendChild(userName)
   cardInfo.appendChild(userLocation)
   cardInfo.appendChild(userProfile)
@@ -78,8 +78,28 @@ function createCard(object) {
   cardInfo.appendChild(userFollowing)
   cardInfo.appendChild(userBio)
 
-  //
 
+  //set class names
+  card.classList.add('card')
+  cardInfo.classList.add('card-info')
+  fullName.classList.add('name')
+  userName.classList.add('username')
+
+  //add content to elements
+  fullName.textContent = userobject[name];
+  userName.textContent = userobject[login];
+  userLocation.textContent = `Location: ${userobject[location]}`;
+  userProfile.textContent = `Profile: ${profileLink}`;
+  userFollowers.textContent = `Followers: ${userobject[followers_url]}`;
+  userFollowing.textContent = `Following: ${userobject[following_url]}`;
+  userBio.textContent = `Bio: ${userobject[bio]}`;
+
+  profileLink.href = userobject[html_url];
+  userImage.src = userobject[avatar_url];
+  userImage.alt = 'Image or avatar of GitHub user';
+
+  
+  return card;
 
 }
 
