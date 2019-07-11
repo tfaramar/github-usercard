@@ -4,6 +4,14 @@
 */
 
 axios.get('https://api.github.com/users/tfaramar')
+  .then((data) => {
+    const cardContainer = document.querySelector('.cards');cardContainer.appendChild(createCard(data.data));
+    console.log(data);
+  })
+  .catch((data) => {
+    console.log('data not available');
+  })
+  
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -26,7 +34,7 @@ axios.get('https://api.github.com/users/tfaramar')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['mjherich', 'bryanszendel', 'daredtech', 'pj-wise', 'hamidoudiallo96', 'projectLewis', 'rich-fswd21'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -48,11 +56,9 @@ const followersArray = [];
 
 */
 
-const cardsContainer = document.querySelector('.cards')
 
-cardsContainer.appendChild(createCard())
 
-function createCard(userobject) {
+function createCard(userObject) {
   //define new elements
   const card = document.createElement('div');
   const userImage = document.createElement('img');
@@ -86,16 +92,16 @@ function createCard(userobject) {
   userName.classList.add('username')
 
   //add content to elements
-  fullName.textContent = userobject[name];
-  userName.textContent = userobject[login];
-  userLocation.textContent = `Location: ${userobject[location]}`;
+  fullName.textContent = `${userObject.name}`;
+  userName.textContent = `${userObject.login}`;
+  userLocation.textContent = `Location: ${userObject.location}`;
   userProfile.textContent = `Profile: ${profileLink}`;
-  userFollowers.textContent = `Followers: ${userobject[followers_url]}`;
-  userFollowing.textContent = `Following: ${userobject[following_url]}`;
-  userBio.textContent = `Bio: ${userobject[bio]}`;
+  userFollowers.textContent = `Followers: ${userObject.followers_url}`;
+  userFollowing.textContent = `Following: ${userObject.following_url}`;
+  userBio.textContent = `Bio: ${userObject.bio}`;
 
-  profileLink.href = userobject[html_url];
-  userImage.src = userobject[avatar_url];
+  profileLink.href = `${userObject.html_url}`;
+  userImage.src = `${userObject.avatar_url}`;
   userImage.alt = 'Image or avatar of GitHub user';
 
   
