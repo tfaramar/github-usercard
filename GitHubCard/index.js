@@ -2,6 +2,33 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+const cardContainer = document.querySelector('.cards');
+
+axios.get('https://api.github.com/users/tfaramar')
+  .then((data) => {
+    cardContainer.appendChild(createCard(data.data));
+    console.log(data);
+  })
+  .catch((data) => {
+    console.log('data not available');
+  })
+
+
+// axios.get('https://api.github.com/users/tfaramar/follower')
+//   .then(data => data.data.slice(0, 5)
+//     .then(followers => {
+//       followers.forEach(follower => {
+//         axios.get(`https://api.github.com/users/${follower.login}`)
+//           .then(data => {
+//             const card = createCard(data.data);
+//             cardContainer.append(card);
+
+//           });
+
+//       });
+//     });
+    // });
+
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -24,7 +51,15 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['mjherich', 'bryanszendel', 'daredtech', 'pj-wise', 'hamidoudiallo96', 'projectLewis', 'rich-fswd21'];
+
+followersArray.forEach(follower => {
+  axios.get(`https://api.github.com/users/${follower}`)
+    .then(user => {
+      console.log(user.data);
+      cardContainer.append(createCard(user.data));
+    });
+});
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,8 +80,58 @@ const followersArray = [];
 </div>
 
 */
+function createCard(userObject) {
+  //define new elements
+  const card = document.createElement('div');
+  const userImage = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const fullName = document.createElement('h3');
+  const userName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const userProfile = document.createElement('p');
+  const profileLink = document.createElement('a');
+  const userFollowers = document.createElement('p');
+  const userFollowing = document.createElement('p');
+  const userBio = document.createElement('p');
 
-/* List of LS Instructors Github username's: 
+  //define structure of elements
+  card.appendChild(userImage);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(fullName);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(userLocation);
+  cardInfo.appendChild(userProfile);
+  cardInfo.appendChild(userFollowers);
+  cardInfo.appendChild(userFollowing);
+  cardInfo.appendChild(userBio);
+
+  //set class names
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  fullName.classList.add('name');
+  userName.classList.add('username');
+
+  //add content to elements
+  fullName.textContent = userObject.name;
+  userName.textContent = userObject.login;
+  userLocation.textContent = `Location: ${userObject.location || "N/A"}`;
+  userProfile.textContent = 'Profile: ';
+  userFollowers.textContent = `Followers: ${userObject.followers}`;
+  userFollowing.textContent = `Following: ${userObject.following}`;
+  userBio.textContent = `Bio: ${userObject.bio || "none"}`;
+
+  profileLink.href = userObject.html_url;
+  profileLink.textContent = userObject.html_url;
+  userProfile.appendChild(profileLink);
+  userImage.src = `${userObject.avatar_url}`;
+  userImage.alt = 'Image or avatar of GitHub user';
+
+
+  return card;
+
+}
+
+/* List of LS Instructors Github username's:
   tetondan
   dustinmyers
   justsml
